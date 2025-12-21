@@ -6,6 +6,7 @@ namespace KKH.AuthCookie.Controllers;
 [Authorize]
 public class UsersController : Controller
 {
+    [HttpGet]
     public IActionResult Index()
     {
         return View();

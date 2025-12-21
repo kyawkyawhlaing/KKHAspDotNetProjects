@@ -15,10 +15,17 @@ public class HomeController : Controller
         return View();
     }
 
+    [HttpGet]
+    public IActionResult Login()
+    {
+        return View();
+    }
+
+
     [HttpPost]
     public async Task<IActionResult> Login(string username, string password)
     {
-        if (username == "kyaw kayw" && password == "123")
+        if (username == "kyaw kyaw" && password == "123")
         {
             var claims = new List<Claim>{
                 new Claim(ClaimTypes.NameIdentifier, username),
@@ -30,7 +37,7 @@ public class HomeController : Controller
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
-            return Redirect("Users");
+            return RedirectToAction("Index", "Users");
         }
         else
         {
