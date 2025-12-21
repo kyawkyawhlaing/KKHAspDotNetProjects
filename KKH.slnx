@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Playground/">
+    <Project Path="KKH.AuthCookie/KKH.AuthCookie.csproj" Id="5c4e13e0-be7c-4da7-a5ae-2ec180901b07" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
     <File Path="Directory.Build.props" />
