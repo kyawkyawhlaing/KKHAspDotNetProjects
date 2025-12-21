@@ -1,0 +1,43 @@
+services:
+  presentation:
+    image: ${DOCKER_REGISTRY-}presentation
+    build:
+      context: .
+      dockerfile: Presentation/Dockerfile
+
+# version: '3.4'
+
+# services:
+#   bookify.api:
+#     image: ${DOCKER_REGISTRY-}bookifyapi
+#     container_name: Bookify.Api
+#     build:
+#       context: ..
+#       dockerfile: Bookify/Bookify.Api/Dockerfile
+#     depends_on: 
+#         - bookify-db
+
+#   bookify-db:
+#     image: postgres:latest
+#     container_name: Bookify.Db
+#     environment:
+#         - POSTGRES_DB=bookify
+#         - POSTGRES_USER=postgres
+#         - POSTGRES_PASSWORD=postgres
+#     volumes:
+#         - ./.containers/database:/var/lib/postgresql
+#     ports:
+#         - 5433:5432
+
+#   bookify-idp:
+#     image: quay.io/keycloak/keycloak
+#     container_name: Bookify.Identity
+#     command: start-dev --import-realm
+#     environment:
+#         - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+#         - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+#     volumes:
+#         - ./.containers/identity:/opt/keycloak/data
+#         - ./.files/bookify-realm-export.json:/tmp/bookify-realm-export.json
+#     ports:
+#         - 18080:8080
