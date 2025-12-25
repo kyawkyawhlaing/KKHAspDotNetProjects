@@ -1,5 +1,4 @@
 ﻿using Application.Abstractions.Authentication;
-using Application.Abstractions.Messaging;
 using Domain.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Infrastructure.Authentication;
+﻿namespace SharedKernel;
 
 public sealed class UserDto
 {
@@ -11,8 +7,6 @@ public sealed class UserDto
     public required string Email { get; set; }
 
     public required string DisplayName { get; set; }
-
-    public string? ImageUrl { get; set; }
 
     public required string Token { get; set; }
 }

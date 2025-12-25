@@ -1,4 +1,4 @@
-﻿namespace MyProject.Application.Users.GetById;
+﻿namespace Application.Users.GetById;
 
 public sealed record UserResponse
 {

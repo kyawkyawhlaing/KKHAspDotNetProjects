@@ -1,9 +1,7 @@
-﻿using Application.Abstractions.Messaging;
-
-namespace MyProject.Application.Users.Register;
+﻿namespace MyProject.Application.Users.Register;
 
 public sealed record RegisterUserCommand(
-    string Email, 
-    string DisplayName, 
-    string Password) 
+    string Email,
+    string DisplayName,
+    string Password)
     : ICommand<Guid>;
