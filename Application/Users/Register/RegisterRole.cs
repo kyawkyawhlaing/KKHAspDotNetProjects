@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MyProject.Application.Users.Register;
+﻿namespace MyProject.Application.Users.Register;
 
 internal static class RegisterRole
 {
