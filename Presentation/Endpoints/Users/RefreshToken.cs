@@ -7,6 +7,7 @@ using Domain.Users;
 using Infrastructure.Authentication;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
+using Presentation.Extensions;
 using static Presentation.Endpoints.Users.Register;
 
 namespace Presentation.Endpoints.Users;
@@ -36,6 +37,7 @@ internal sealed class RefreshToken : IEndpoint
 
             return Results.InternalServerError("Unable to generate refresh token. Please try again later.");
         })
+        .HasPermission()
         .WithTags(Tags.Users);
     }
 }

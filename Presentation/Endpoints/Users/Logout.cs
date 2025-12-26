@@ -32,6 +32,7 @@ internal sealed class Logout : IEndpoint
 
             return result.Match(Results.Ok, CustomResults.Problem);
         })
+        .HasPermission()
         .WithTags(Tags.Users);
     }
 }
