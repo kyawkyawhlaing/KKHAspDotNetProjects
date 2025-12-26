@@ -15,7 +15,6 @@ internal sealed class Logout : IEndpoint
     {
         app.MapPost("users/logout", async (
             HttpContext httpContext,
-            ClaimsPrincipal claimsPrincipal,
             ICommandHandler<LogoutUserCommand, string> handler,
             CancellationToken cancellationToken) => 
         {
@@ -32,7 +31,7 @@ internal sealed class Logout : IEndpoint
 
             return result.Match(Results.Ok, CustomResults.Problem);
         })
-        .RequireAuthorization()
+        .HasPermission()
         .WithTags(Tags.Users);
     }
 }

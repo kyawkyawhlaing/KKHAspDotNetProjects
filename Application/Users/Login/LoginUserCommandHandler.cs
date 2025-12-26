@@ -6,26 +6,35 @@ namespace Application.Users.Login;
 
 internal sealed class LoginUserCommandHandler(
     UserManager<User> userManager,
-    SignInManager<User> signInManager) : ICommandHandler<LoginUserCommand, User>
+    SignInManager<User> signInManager,
+    ITokenProvider tokenProvider) : ICommandHandler<LoginUserCommand, UserDto>
 {
-    public async Task<Result<User>> Handle(LoginUserCommand command, CancellationToken cancellationToken)
+    public async Task<Result<UserDto>> Handle(LoginUserCommand command, CancellationToken cancellationToken)
     {
         User? user = await userManager.FindByEmailAsync(command.Email);
 
         if (user is null)
         {
-            return Result.Failure<User>(UserErrors.NotFoundByEmail);
+            return Result.Failure<UserDto>(UserErrors.NotFoundByEmail);
         }
 
         SignInResult result = await signInManager.CheckPasswordSignInAsync(user, command.Password, false);
 
         if (!result.Succeeded)
         {
-            return Result.Failure<User>(UserErrors.Unauthorized());
+            return Result.Failure<UserDto>(UserErrors.InvalidPassword);
         }
 
         await signInManager.SignInAsync(user, false);
 
-        return user;
+        var userDto = new UserDto
+        {
+            Id = user.Id,
+            DisplayName = user.DisplayName,
+            Email = user.Email!,
+            Token = await tokenProvider.CreateToken(user)
+        };
+
+        return userDto;
     }
 }

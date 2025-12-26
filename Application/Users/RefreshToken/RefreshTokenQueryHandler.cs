@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Application.Abstractions.Authentication;
 using Domain.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Users.RefreshToken;
 
-internal sealed class RefreshTokenQueryHandler(UserManager<User> userManager) : IQueryHandler<RefreshTokenQuery, User>
+internal sealed class RefreshTokenQueryHandler(
+    UserManager<User> userManager,
+    ITokenProvider tokenProvider) : IQueryHandler<RefreshTokenQuery, UserDto>
 {
-    public async Task<Result<User>> Handle(RefreshTokenQuery query, CancellationToken cancellationToken = default)
+    public async Task<Result<UserDto>> Handle(RefreshTokenQuery query, CancellationToken cancellationToken = default)
     {
         User user = await userManager.Users
             .FirstOrDefaultAsync(
@@ -18,9 +21,17 @@ internal sealed class RefreshTokenQueryHandler(UserManager<User> userManager) : 
 
         if (user is null)
         {
-            return Result.Failure<User>(UserErrors.TokenNotFound());
+            return Result.Failure<UserDto>(UserErrors.InvalidRefreshToken());
         }
 
-        return user;
+        var userDto = new UserDto
+        {
+            Id = user.Id,
+            DisplayName = user.DisplayName,
+            Email = user.Email!,
+            Token = await tokenProvider.CreateToken(user)
+        };
+
+        return userDto;
     }
 }

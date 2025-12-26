@@ -10,8 +10,12 @@ public static class UserErrors
         "Users.FailedToUpdateRefreshToken",
         "Refresh token could not be updated.");
 
-    public static Error TokenNotFound() => Error.Failure(
-        "Users.TokenNotFound",
+    public static Error InvalidPassword => Error.Problem(
+    "Users.InvalidPassword",
+    "The provided password is incorrect.");
+
+    public static Error InvalidRefreshToken() => Error.Failure(
+        "Users.InvalidRefreshToken",
         "The specified refresh token does not exist or has expired.");
 
     public static Error NotFound(Guid userId) => Error.NotFound(

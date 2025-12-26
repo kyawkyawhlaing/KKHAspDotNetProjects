@@ -8,6 +8,7 @@ using Infrastructure.Authentication;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Presentation.Extensions;
+using Presentation.Infrastructure;
 using static Presentation.Endpoints.Users.Register;
 
 namespace Presentation.Endpoints.Users;
@@ -19,25 +20,24 @@ internal sealed class RefreshToken : IEndpoint
         app.MapPost("users/refresh-token", async (
             HttpContext httpContext,
             ITokenProvider tokenProvider,
-            IQueryHandler<RefreshTokenQuery, User> handler,
+            IQueryHandler<RefreshTokenQuery, UserDto> handler,
             CancellationToken cancellationToken) =>
         {
             string refreshToken = httpContext.Request.Cookies["refreshToken"]!;
 
             var query = new RefreshTokenQuery(refreshToken);
 
-            Result<User> result = await handler.Handle(query, cancellationToken);
+            Result<UserDto> result = await handler.Handle(query, cancellationToken);
 
             if (result.IsSuccess)
             {
-                await httpContext.SetRefreshTokenCookie(result.Value);
-
-                return Results.Ok(await result.Value.ToDto(tokenProvider));
+                await httpContext.SetRefreshTokenCookie(result.Value.Id);
             }
 
-            return Results.InternalServerError("Unable to generate refresh token. Please try again later.");
+            return result.Match(Results.Ok, CustomResults.Problem);
+
         })
+        .HasPermission()
         .WithTags(Tags.Users);
-        //.HasPermission();
     }
 }
