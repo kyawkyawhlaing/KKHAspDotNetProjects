@@ -2,4 +2,4 @@
 
 namespace Application.Users.RefreshToken;
 
-public sealed record RefreshTokenQuery(string RefreshToken) : IQuery<User>;
+public sealed record RefreshTokenQuery(string RefreshToken) : IQuery<UserDto>;

@@ -1,6 +1,4 @@
-﻿
-using System.Security.Claims;
-using Application.Abstractions.Authentication;
+﻿using Application.Abstractions.Authentication;
 using Application.Abstractions.Messaging;
 using Application.Users.Login;
 using Domain.Users;
@@ -20,21 +18,19 @@ internal sealed class Login : IEndpoint
             HttpContext httpContext,
             ITokenProvider tokenProvider,
             Reqeust request,
-            ICommandHandler<LoginUserCommand, User> handler,
+            ICommandHandler<LoginUserCommand, UserDto> handler,
             CancellationToken cancellationToken) =>
         {
             var command = new LoginUserCommand(request.Email, request.Password);
 
-            Result<User> result = await handler.Handle(command, cancellationToken);
+            Result<UserDto> result = await handler.Handle(command, cancellationToken);
 
             if (result.IsSuccess)
             {
-                await httpContext.SetRefreshTokenCookie(result.Value);
-
-                return Results.Ok(await result.Value.ToDto(tokenProvider));
+                await httpContext.SetRefreshTokenCookie(result.Value.Id);
             }
 
-            return Results.InternalServerError("Authentication could not be completed due to an internal error.");
+            return result.Match(Results.Ok, CustomResults.Problem);
         })
         .WithTags(Tags.Users);
     }
