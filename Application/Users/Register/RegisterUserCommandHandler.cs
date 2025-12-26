@@ -26,6 +26,7 @@ internal sealed class RegisterUserCommandHandler(UserManager<User> userManager)
 
         IdentityResult result = await userManager.CreateAsync(user, command.Password);
 
+        
         if (!result.Succeeded)
         {
             return Result.Failure<Guid>(UserErrors.InvalidUserCreated(user.Id));

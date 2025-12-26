@@ -1,3 +1,5 @@
-﻿namespace Application.Users.Login;
+﻿using Domain.Users;
 
-public sealed record LoginUserCommand(string Email, string Password) : ICommand<string>;
+namespace Application.Users.Login;
+
+public sealed record LoginUserCommand(string Email, string Password) : ICommand<User>;

@@ -4,15 +4,15 @@ public static class UserErrors
 {
     public static  Error InvalidUserCreated(Guid userId) => Error.Problem(
         "Users.InvalidUserCreated",
-        "You can't create a user");
+        "The user could not be created due to invalid data.");
 
     public static Error FailedToUpdateRefreshToken() => Error.Problem(
         "Users.FailedToUpdateRefreshToken",
-        "You can't update the refresh token");
+        "Refresh token could not be updated.");
 
     public static Error TokenNotFound() => Error.Failure(
         "Users.TokenNotFound",
-        "Token was not found");
+        "The specified refresh token does not exist or has expired.");
 
     public static Error NotFound(Guid userId) => Error.NotFound(
         "Users.NotFound",

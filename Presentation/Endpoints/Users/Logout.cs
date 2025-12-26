@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Application.Abstractions.Messaging;
 using Application.Users.Logout;
 using Domain.Users;
+using Infrastructure.Authentication;
 using Presentation.Extensions;
 using Presentation.Infrastructure;
 

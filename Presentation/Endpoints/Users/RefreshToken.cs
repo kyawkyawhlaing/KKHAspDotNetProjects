@@ -34,7 +34,7 @@ internal sealed class RefreshToken : IEndpoint
                 return Results.Ok(await result.Value.ToDto(tokenProvider));
             }
 
-            return Results.InternalServerError("Failed to generate Refresh Token");
+            return Results.InternalServerError("Unable to generate refresh token. Please try again later.");
         })
         .WithTags(Tags.Users);
     }
