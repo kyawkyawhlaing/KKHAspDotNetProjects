@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Identity;
 namespace Application.Users.Login;
 
 internal sealed class LoginUserCommandHandler(
-    UserManager<User> userManager) : ICommandHandler<LoginUserCommand, User>
+    UserManager<User> userManager,
+    SignInManager<User> signInManager) : ICommandHandler<LoginUserCommand, User>
 {
     public async Task<Result<User>> Handle(LoginUserCommand command, CancellationToken cancellationToken)
     {
@@ -16,12 +17,14 @@ internal sealed class LoginUserCommandHandler(
             return Result.Failure<User>(UserErrors.NotFoundByEmail);
         }
 
-        bool verified = await userManager.CheckPasswordAsync(user, command.Password);
+        SignInResult result = await signInManager.CheckPasswordSignInAsync(user, command.Password, false);
 
-        if (!verified)
+        if (!result.Succeeded)
         {
-            return Result.Failure<User>(UserErrors.NotFoundByEmail);
+            return Result.Failure<User>(UserErrors.Unauthorized());
         }
+
+        await signInManager.SignInAsync(user, false);
 
         return user;
     }

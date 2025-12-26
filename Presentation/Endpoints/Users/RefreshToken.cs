@@ -16,8 +16,8 @@ internal sealed class RefreshToken : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("users/refresh-token", async(
-            HttpContext httpContext, 
+        app.MapPost("users/refresh-token", async (
+            HttpContext httpContext,
             ITokenProvider tokenProvider,
             IQueryHandler<RefreshTokenQuery, User> handler,
             CancellationToken cancellationToken) =>
@@ -37,7 +37,7 @@ internal sealed class RefreshToken : IEndpoint
 
             return Results.InternalServerError("Unable to generate refresh token. Please try again later.");
         })
-        .HasPermission()
         .WithTags(Tags.Users);
+        //.HasPermission();
     }
 }

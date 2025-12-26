@@ -9,7 +9,7 @@ public sealed class User : IdentityUser<Guid>
 
     public string? RefreshToken { get; set; }
 
-    public DateTime? RefreshTokenExpiry { get; set; }
+    public DateTime? RefreshTokenExpiry { get; set; } = DateTime.UtcNow;
 
     [NotMapped]
     private readonly List<IDomainEvent> _domainEvents = [];

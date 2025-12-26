@@ -4,4 +4,4 @@ using System.Text;
 
 namespace Application.Users.Logout;
 
-public sealed record LogoutUserCommand(string UserId) : ICommand<string>;
+public sealed record LogoutUserCommand(Guid UserId) : ICommand<string>;

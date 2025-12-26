@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace MyProject.Infrastructure.Migrations;
+namespace Infrastructure.Migrations;
 
 /// <inheritdoc />
 public partial class Create_Database : Migration
@@ -40,7 +40,7 @@ public partial class Create_Database : Migration
                 id = table.Column<Guid>(type: "uuid", nullable: false),
                 display_name = table.Column<string>(type: "text", nullable: false),
                 refresh_token = table.Column<string>(type: "text", nullable: true),
-                refresh_token_expiry = table.Column<string>(type: "text", nullable: true),
+                refresh_token_expiry = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                 user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                 normalized_user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                 email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -59,6 +59,21 @@ public partial class Create_Database : Migration
             constraints: table =>
             {
                 table.PrimaryKey("pk_asp_net_users", x => x.id);
+            });
+
+        migrationBuilder.CreateTable(
+            name: "identity_role",
+            schema: "public",
+            columns: table => new
+            {
+                id = table.Column<string>(type: "text", nullable: false),
+                name = table.Column<string>(type: "text", nullable: true),
+                normalized_name = table.Column<string>(type: "text", nullable: true),
+                concurrency_stamp = table.Column<string>(type: "text", nullable: true)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("pk_identity_role", x => x.id);
             });
 
         migrationBuilder.CreateTable(
