@@ -1,0 +1,24 @@
+﻿using NTier.Domain.Features.Users.Login;
+
+namespace NTier.Api.Endpoints.Users;
+
+internal sealed class Login : IEndpoint
+{
+    public sealed record Request(string Email, string Password);
+
+    public void MapEndpoint(IEndpointRouteBuilder app)
+    {
+        app.MapPost("users/login", async (
+            Request request,
+            ICommandHandler<LoginUserCommand, TokenResponseDto> handler,
+            CancellationToken cancellationToken) =>
+        {
+            var command = new LoginUserCommand(request.Email, request.Password);
+
+            Result<TokenResponseDto> result = await handler.Handle(command, cancellationToken);
+
+            return result.Match(Results.Ok, CustomResults.Problem);
+        })
+        .WithTags(Tags.Users);
+    }
+}
