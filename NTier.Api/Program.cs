@@ -1,0 +1,30 @@
+using System.Reflection;
+using NTier.Api;
+using NTier.Domain;
+
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSwaggerGenWithAuth();
+builder.Services.AddPresentation();
+builder.AddDomain(builder.Configuration);
+builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
+
+WebApplication app = builder.Build();
+
+app.MapEndpoints();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+await app.RunAsync();

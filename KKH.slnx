@@ -11,6 +11,12 @@
     <Project Path="Presentation/Presentation.csproj" />
     <Project Path="SharedKernel/SharedKernel.csproj" />
   </Folder>
+  <Folder Name="/src/Ntier/">
+    <Project Path="NTier.Api/NTier.Api.csproj" />
+    <Project Path="NTier.Database/NTier.Database.csproj" />
+    <Project Path="NTier.Domain/NTier.Domain.csproj" />
+    <Project Path="NTier.SharedKernel/NTier.SharedKernel.csproj" />
+  </Folder>
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>
