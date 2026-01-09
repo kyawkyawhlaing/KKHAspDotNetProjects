@@ -1,9 +1,11 @@
 using System.Reflection;
 using NTier.Api;
 using NTier.Domain;
+using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseSerilog((context, loggerConfig) => loggerConfig.ReadFrom.Configuration(context.Configuration));
 builder.Services.AddSwaggerGenWithAuth();
 builder.Services.AddPresentation();
 builder.AddDomain(builder.Configuration);
@@ -19,7 +21,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseRequestContextLogging();
+
+app.UseSerilogRequestLogging();
+
+app.UseExceptionHandler();
 
 app.UseAuthentication();
 

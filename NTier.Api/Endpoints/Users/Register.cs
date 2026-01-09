@@ -23,6 +23,7 @@ internal sealed class Register : IEndpoint
 
             return result.Match(Results.Ok, CustomResults.Problem);
         })
+        .HasPermission()
         .WithTags(Tags.Users);
     }
 }

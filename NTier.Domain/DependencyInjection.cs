@@ -7,8 +7,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Npgsql;
+using NTier.Domain.Abstractions.Authentications;
 using NTier.Domain.Abstractions.Behaviors;
 using NTier.Domain.Abstractions.DomainEvents;
+using NTier.Domain.Features.Authentications;
 using NTier.Domain.Features.DomainEvents;
 using Scrutor;
 
@@ -44,10 +46,6 @@ public static class DependencyInjection
         services.AddTransient<IDomainEventsDispatcher, DomainEventsDispatcher>();
 
         services.Scan(scan => scan.FromAssembliesOf(typeof(DependencyInjection))
-            .AddClasses()
-                .UsingRegistrationStrategy(RegistrationStrategy.Skip)
-                .AsImplementedInterfaces()
-                .WithScopedLifetime()
             .AddClasses(classes => classes.AssignableTo(typeof(IQueryHandler<,>)), publicOnly: false)
                 .AsImplementedInterfaces()
                 .WithScopedLifetime()
@@ -87,6 +85,8 @@ public static class DependencyInjection
             });
 
         services.AddHttpContextAccessor();
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<ITokenProvider, TokenProvider>();
 
         return services;
     }

@@ -11,9 +11,16 @@ internal sealed class RefreshTokenCommandHandler(ITokenProvider tokenProvider) :
 
         if (user is null)
         {
-            Result.Failure<TokenResponseDto>(TokenErrors.InvalidRefreshToken);
+            return Result.Failure<TokenResponseDto>(TokenErrors.InvalidRefreshToken);
         }
 
-        return await tokenProvider.CreateTokenResponse(user!);
+        TokenResponseDto token = await tokenProvider.CreateTokenResponse(user!);
+
+        if (token is null)
+        {
+            return Result.Failure<TokenResponseDto>(TokenErrors.InvalidRefreshToken);
+        }
+
+        return token;
     }
 }
